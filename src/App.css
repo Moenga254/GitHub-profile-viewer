@@ -1,0 +1,174 @@
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem 1rem;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.github-logo {
+  color: #24292f;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #24292f 0%, #57606a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.app-subtitle {
+  color: #57606a;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.error-message {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem 1.5rem;
+  background: #fff;
+  border-left: 4px solid #d73a49;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+.error-icon {
+  color: #d73a49;
+  flex-shrink: 0;
+}
+
+.error-message span {
+  color: #24292f;
+  font-size: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.empty-icon {
+  color: #8b949e;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.empty-text {
+  color: #57606a;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .app-container {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  }
+
+  .github-logo {
+    color: #f0f6fc;
+  }
+
+  .app-title {
+    background: linear-gradient(135deg, #f0f6fc 0%, #c9d1d9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .app-subtitle {
+    color: #8b949e;
+  }
+
+  .error-message {
+    background: #161b22;
+    border-left-color: #f85149;
+  }
+
+  .error-icon {
+    color: #f85149;
+  }
+
+  .error-message span {
+    color: #c9d1d9;
+  }
+
+  .empty-icon {
+    color: #6e7681;
+  }
+
+  .empty-text {
+    color: #8b949e;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 2rem;
+  }
+
+  .github-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .app-subtitle {
+    font-size: 1rem;
+  }
+}
