@@ -1,4 +1,4 @@
-import "./CompareToggle.css";
+import "./Comparison.css";
 
 function CompareToggle({ compareMode, onToggle }) {
   return (
