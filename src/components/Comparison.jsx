@@ -1,6 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Comparison.css";
 import Skeleton from "./Skeleton";
+
+// ✅ FIX 3: Moved outside component so it's in scope everywhere
+const getLanguageColor = (language) => {
+  const colors = {
+    JavaScript: "#f1e05a",
+    TypeScript: "#3178c6",
+    Python: "#3572A5",
+    Java: "#b07219",
+    Ruby: "#701516",
+    PHP: "#4F5D95",
+    CSS: "#563d7c",
+    HTML: "#e34c26",
+    Go: "#00ADD8",
+    Rust: "#dea584",
+    Swift: "#ffac45",
+    Kotlin: "#A97BFF",
+    C: "#555555",
+    "C++": "#f34b7d",
+    "C#": "#178600",
+    Vue: "#41b883",
+    React: "#61dafb",
+    Shell: "#89e051",
+    Dart: "#00B4AB",
+    Scala: "#c22d40",
+  };
+  return colors[language] || "#8b949e";
+};
 
 function Comparison({
   user1,
@@ -29,7 +56,6 @@ function Comparison({
     onSearch2(username2);
   };
 
-  // Calculate language distribution
   const getLanguageStats = (repos) => {
     const languages = {};
     repos.forEach((repo) => {
@@ -42,7 +68,6 @@ function Comparison({
       .slice(0, 5);
   };
 
-  // Calculate total stats
   const getTotalStats = (repos) => {
     return repos.reduce(
       (acc, repo) => ({
@@ -110,9 +135,7 @@ function Comparison({
             key={suggestion}
             type="button"
             className="suggestion-chip-small"
-            onClick={() => {
-              setUsername(suggestion);
-            }}
+            onClick={() => setUsername(suggestion)}
           >
             {suggestion}
           </button>
@@ -164,7 +187,10 @@ function Comparison({
     }
 
     const totalStats = getTotalStats(repos);
+    // ✅ FIX 2: Computed here at top of the successful render path, used inline below
+    const languageStats = getLanguageStats(repos);
 
+    // ✅ FIX 4: Single, clean return with everything inside it
     return (
       <div className="compare-user-card">
         <div className="compare-avatar-section">
@@ -188,14 +214,14 @@ function Comparison({
           </div>
         </div>
 
-        <div className="compare-additional-stats"></div>
+        {/* ✅ FIX 1: div now wraps both children instead of being self-closed */}
+        <div className="compare-additional-stats">
           <div className="additional-stat">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
               <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
             </svg>
             <span>{totalStats.stars.toLocaleString()} total stars</span>
           </div>
-
           <div className="additional-stat">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
               <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75v-.878a2.25 2.25 0 111.5 0v.878a2.25 2.25 0 01-2.25 2.25h-1.5v2.128a2.251 2.251 0 11-1.5 0V8.5h-1.5A2.25 2.25 0 013 6.25v-.878a2.25 2.25 0 111.5 0zM5 3.25a.75.75 0 100-1.5.75.75 0 000 1.5zm6.75.75a.75.75 0 100-1.5.75.75 0 000 1.5zm-3 8.75a.75.75 0 100-1.5.75.75 0 000 1.5z" />
@@ -204,22 +230,11 @@ function Comparison({
           </div>
         </div>
 
-        
-    const languageStats = getLanguageStats(repos);
-
-  return (
-    <div className="compare-user-card">
-      {/* other JSX */}
-
-      {languageStats.length > 0 && (
-        <div className="compare-languages">
-          <h4>Top Languages</h4>
-          <div className="language-list">
-            {languageStats.map((item) => {
-              const lang = item[0];
-              const count = item[1];
-
-              return (
+        {languageStats.length > 0 && (
+          <div className="compare-languages">
+            <h4>Top Languages</h4>
+            <div className="language-list">
+              {languageStats.map(([lang, count]) => (
                 <div key={lang} className="language-item">
                   <span
                     className="language-dot"
@@ -228,14 +243,10 @@ function Comparison({
                   <span className="language-name">{lang}</span>
                   <span className="language-count">{count}</span>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-};
+        )}
 
         <a
           className="view-profile-btn"
@@ -245,8 +256,9 @@ function Comparison({
         >
           View Profile
         </a>
-    
-    };
+      </div>
+    );
+  };
 
   const renderComparison = () => {
     if (!user1 || !user2) return null;
@@ -308,10 +320,16 @@ function Comparison({
       <div className="comparison-metrics">
         <h3 className="comparison-title">Head-to-Head Comparison</h3>
         {metrics.map((metric, index) => {
-          const winner = metric.value1 > metric.value2 ? "left" : metric.value1 < metric.value2 ? "right" : "tie";
-          const percentage1 = metric.value1 + metric.value2 > 0 
-            ? (metric.value1 / (metric.value1 + metric.value2)) * 100 
-            : 50;
+          const winner =
+            metric.value1 > metric.value2
+              ? "left"
+              : metric.value1 < metric.value2
+              ? "right"
+              : "tie";
+          const percentage1 =
+            metric.value1 + metric.value2 > 0
+              ? (metric.value1 / (metric.value1 + metric.value2)) * 100
+              : 50;
           const percentage2 = 100 - percentage1;
 
           return (
@@ -390,32 +408,6 @@ function Comparison({
       {renderComparison()}
     </div>
   );
-
-  // Helper function for language colors
-const getLanguageColor = (language) => {
-  const colors = {
-    JavaScript: "#f1e05a",
-    TypeScript: "#3178c6",
-    Python: "#3572A5",
-    Java: "#b07219",
-    Ruby: "#701516",
-    PHP: "#4F5D95",
-    CSS: "#563d7c",
-    HTML: "#e34c26",
-    Go: "#00ADD8",
-    Rust: "#dea584",
-    Swift: "#ffac45",
-    Kotlin: "#A97BFF",
-    C: "#555555",
-    "C++": "#f34b7d",
-    "C#": "#178600",
-    Vue: "#41b883",
-    React: "#61dafb",
-    Shell: "#89e051",
-    Dart: "#00B4AB",
-    Scala: "#c22d40",
-  };
-  return colors[language] || "#8b949e";
-};
+}
 
 export default Comparison;
