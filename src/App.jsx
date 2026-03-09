@@ -4,6 +4,7 @@ import Profile from "./components/Profile";
 import Repos from "./components/Repos";
 import Skeleton from "./components/Skeleton";
 import CompareToggle from "./components/CompareToggle";
+import Comparison from "./components/Comparison";
 import "./App.css";
 
 function App() {
